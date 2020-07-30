@@ -212,14 +212,14 @@ static void herror() {
 
 // 玩家放置方块
 THook(__int64,
-	MSSYM_MD5_949c4cd05bf2b86d54fb93fe7569c2b8,
+	"?onBlockPlacedByPlayer@VanillaServerGameplayEventListener@@UEAA?AW4EventResult@@AEAVPlayer@@AEBVBlock@@AEBVBlockPos@@_N@Z",
 	void* _this, Player* pPlayer, const Block* pBlk, const BlockPos* pBlkpos, bool _bool) {
 	Log::Player::Block("Event", pPlayer->getNameTag()->c_str(), pPlayer->isStand(), pPlayer->getDimension(), u8"放置", pBlk->getLegacyBlock()->getFullName(), pBlkpos->getPosition());
 	return original(_this, pPlayer, pBlk, pBlkpos, _bool);
 }
 // 玩家操作物品
 THook(bool,
-	MSSYM_B1QA9useItemOnB1AA8GameModeB2AAA4UEAAB1UE14NAEAVItemStackB2AAE12AEBVBlockPosB2AAA9EAEBVVec3B2AAA9PEBVBlockB3AAAA1Z,
+	"?useItemOn@GameMode@@UEAA_NAEAVItemStack@@AEBVBlockPos@@EAEBVVec3@@PEBVBlock@@@Z",
 	void* _this, ItemStack* item, const BlockPos* pBlkpos, unsigned __int8 a4, void *v5, Block* pBlk) {
 	auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
 	std::string mstr = item->getName();
@@ -231,7 +231,7 @@ THook(bool,
 }
 // 玩家破坏方块
 THook(bool,
-	MSSYM_B2QUE20destroyBlockInternalB1AA8GameModeB2AAA4AEAAB1UE13NAEBVBlockPosB2AAA1EB1AA1Z,
+	"?_destroyBlockInternal@GameMode@@AEAA_NAEBVBlockPos@@E@Z",
 	void * _this, const BlockPos* pBlkpos) {
 	auto pPlayer = *reinterpret_cast<Player * *>(reinterpret_cast<VA>(_this) + 8);
 	auto pBlockSource = *(BlockSource * *)(*((VA*)_this + 1) + 800);
@@ -246,7 +246,7 @@ THook(bool,
 
 // 玩家打开箱子
 THook(void,
-	MSSYM_B1QA9startOpenB1AE15ChestBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
+	"?startOpen@ChestBlockActor@@UEAAXAEAVPlayer@@@Z",
 	void* _this, Player* pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
@@ -255,7 +255,7 @@ THook(void,
 }
 // 玩家打开木桶
 THook(void,
-	MSSYM_B1QA9startOpenB1AE16BarrelBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
+	"?startOpen@BarrelBlockActor@@UEAAXAEAVPlayer@@@Z",
 	void* _this, Player* pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
@@ -264,7 +264,7 @@ THook(void,
 }
 // 玩家关闭箱子
 THook(__int64,
-	MSSYM_B1QA8stopOpenB1AE15ChestBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
+	"?stopOpen@ChestBlockActor@@UEAAXAEAVPlayer@@@Z",
 	void* _this, Player * pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
@@ -273,7 +273,7 @@ THook(__int64,
 }
 // 玩家关闭木桶
 THook(__int64,
-	MSSYM_B1QA8stopOpenB1AE16BarrelBlockActorB2AAE15UEAAXAEAVPlayerB3AAAA1Z,
+	"?stopOpen@BarrelBlockActor@@UEAAXAEAVPlayer@@@Z",
 	void* _this, Player* pPlayer) {
 	auto real_this = reinterpret_cast<void*>(reinterpret_cast<VA>(_this) - 248);
 	auto pBlkpos = reinterpret_cast<BlockActor*>(real_this)->getPosition();
@@ -282,7 +282,7 @@ THook(__int64,
 }
 
 // 容器内物品改变
-THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UEAAXHB1AA1Z,
+THook(void, "?containerContentChanged@LevelContainerModel@@UEAAXH@Z",
 	LevelContainerModel* a1, VA a2) {
 	VA v3 = *((VA*)a1 + 26);
 	BlockSource* bs = *(BlockSource**)(*(VA*)(v3 + 808) + 72);
@@ -292,9 +292,8 @@ THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UE
 	if (id == 54 || id == 130 || id == 146 || id == -203 || id == 205 || id == 218) {	// 非箱子、桶、潜影盒的情况不作处理
 		auto slot = a2;
 		auto v5 = (*(VA(**)(LevelContainerModel*))(*(VA*)a1 + 160))(a1);
-		ItemStack* v9 = SYM_POINT(ItemStack, MSSYM_B1QA5EMPTYB1UA4ITEMB1AA9ItemStackB2AAA32V1B1AA1B);
 		if (v5) {
-			v9 = (ItemStack*)(*(VA(**)(VA, VA))(*(VA*)v5 + 40))(v5, a2);
+			ItemStack* v9 = (ItemStack*)(*(VA(**)(VA, VA))(*(VA*)v5 + 40))(v5, a2);
 			auto pItemStack = v9;
 			auto id = pItemStack->getId();
 			auto size = pItemStack->getCount();
@@ -312,7 +311,7 @@ THook(void, MSSYM_B1QE23containerContentChangedB1AE19LevelContainerModelB2AAA6UE
 
 // 玩家切换维度
 THook(bool,
-	MSSYM_B2QUE21playerChangeDimensionB1AA5LevelB2AAA4AEAAB1UE11NPEAVPlayerB2AAE26AEAVChangeDimensionRequestB3AAAA1Z,
+	"?_playerChangeDimension@Level@@AEAA_NPEAVPlayer@@AEAVChangeDimensionRequest@@@Z",
 	void* _this, Player* pPlayer, void* req) {
 	bool ret = original(_this, pPlayer, req);
 	if (ret)
@@ -322,7 +321,7 @@ THook(bool,
 
 // 命名生物死亡
 THook(void,
-	MSSYM_B1QA3dieB1AA3MobB2AAE26UEAAXAEBVActorDamageSourceB3AAAA1Z,
+	"?die@Mob@@UEAAXAEBVActorDamageSource@@@Z",
 	Mob* _this, void* dmsg) {
 	auto mob_name = _this->getNameTag()->c_str();
 	if (strlen(mob_name) != 0) {
@@ -334,7 +333,7 @@ THook(void,
 		auto srActid = (VA*)(*(VA(__fastcall**)(VA, char*))(*(VA*)v2[1] + 64))(
 			v2[1], &v72);
 		auto SrAct = SYMCALL(Actor *,
-			MSSYM_B1QE11fetchEntityB1AA5LevelB2AAE13QEBAPEAVActorB2AAE14UActorUniqueIDB3AAUA1NB1AA1Z,
+			"?fetchEntity@Level@@QEBAPEAVActor@@UActorUniqueID@@_N@Z",
 			v7, *srActid, 0);
 		auto sr_name = "";
 		if (SrAct) {
@@ -347,7 +346,7 @@ THook(void,
 
 // 聊天消息
 THook(void,
-	MSSYM_MD5_ad251f2fd8c27eb22c0c01209e8df83c,
+	"?createChat@TextPacket@@SA?AV1@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@000@Z",
 	void * _this, std::string& player_name, std::string& target, std::string& msg, std::string& char_style) {
 	original(_this, player_name, target, msg, char_style);
 	if (char_style != "title")

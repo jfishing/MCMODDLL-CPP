@@ -4,7 +4,12 @@
 */
 #pragma once
 
-#include "符号定位.hpp"
+
+using VA = unsigned __int64;
+using RVA = unsigned long int;
+
+template<typename Type>
+using Ptr = Type*;
 
 template<typename T>
 struct SharedPtr {
@@ -62,7 +67,7 @@ struct BlockSource {
 	// 取方块
 	Block* getBlock(const BlockPos* blkpos) {
 		return SYMCALL(Block *,
-			MSSYM_B1QA8getBlockB1AE11BlockSourceB2AAE13QEBAAEBVBlockB2AAE12AEBVBlockPosB3AAAA1Z,
+			"?getBlock@BlockSource@@QEBAAEBVBlock@@AEBVBlockPos@@@Z",
 			this, blkpos);
 	}
 };
@@ -85,7 +90,7 @@ struct Actor {
 	// 取名字标签
 	const std::string* getNameTag() const {
 		return SYMCALL(const std::string *,
-			MSSYM_MD5_7044ab83168b0fd345329e6566fd47fd,
+			"?getNameTag@Actor@@UEBAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ",
 			this);
 	}
 	// 是否悬空
@@ -95,7 +100,7 @@ struct Actor {
 	// 取玩家位置
 	Vec3* getPos() {
 		return SYMCALL(Vec3 *,
-			MSSYM_B1QA6getPosB1AA5ActorB2AAE12UEBAAEBVVec3B2AAA2XZ,
+			"?getPos@Actor@@UEBAAEBVVec3@@XZ",
 			this);
 	}
 };
@@ -124,14 +129,14 @@ struct ItemStack {
 	// 取物品ID
 	int getId() {
 		return SYMCALL(short,
-			MSSYM_B1QA5getIdB1AE13ItemStackBaseB2AAA7QEBAFXZ,
+			"?getId@ItemStackBase@@QEBAFXZ",
 			this);
 	}
 	// 取物品名称
 	std::string getName() {
 		std::string str;
 		SYMCALL(VA,
-			MSSYM_MD5_6d581a35d7ad70fd364b60c3ebe93394,
+			"?getName@ItemStackBase@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ",
 			this, &str);
 		return str;
 	}
