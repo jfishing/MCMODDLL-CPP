@@ -148,7 +148,7 @@ struct ItemStack {
 };
 
 struct LevelContainerModel {
-	// 取开容者
+	// 取开容器者
 	Player* getPlayer() {
 		return ((Player**)this)[26];
 	}
